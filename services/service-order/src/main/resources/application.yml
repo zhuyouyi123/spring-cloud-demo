@@ -1,0 +1,35 @@
+server:
+  port: 8000
+
+spring:
+  profiles:
+    # 这里配置的是命名空间
+    active: public
+  application:
+    name: service-order
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        # 默认使用dev
+        namespace: ${spring.profiles.active:public}
+        import-check:
+          enabled: false
+---
+spring:
+  config:
+    import:
+      - nacos:service-order.properties?group=order
+      - nacos:service-product.properties?group=product
+    activate:
+      # 这里配置的是命名空间
+      on-profile: public
+---
+spring:
+  config:
+    import:
+      - nacos:service-order.properties?group=dev
+      - nacos:service-product.properties?group=product
+    activate:
+      # 这里配置的是命名空间
+      on-profile: dev

@@ -17,10 +17,10 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(String id) {
         return Product.builder()
                 .id(Long.valueOf(id))
-                .projectName("product")
+                .projectName("我是product")
                 .price(new BigDecimal("10.0"))
                 .description("product description")
-                .num(10)
+                .num(2222)
                 .build();
     }
 }

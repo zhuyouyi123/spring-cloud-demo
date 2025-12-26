@@ -23,15 +23,6 @@ public class Order {
 
     private String address;
 
-    private List<ProductInfo> productInfos;
-
-    @Data
-    @Builder
-    public static class ProductInfo {
-        private Long productId;
-        private Integer num;
-        private BigDecimal price;
-        private String name;
-    }
+    private List<Product> productInfos;
 
 }
