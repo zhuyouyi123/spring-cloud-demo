@@ -15,6 +15,10 @@ spring:
         namespace: ${spring.profiles.active:public}
         import-check:
           enabled: false
+
+logging:
+  level:
+    com.demo.order: debug
 ---
 spring:
   config:
