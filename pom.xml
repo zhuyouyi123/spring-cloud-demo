@@ -99,6 +99,12 @@
                 <version>1.18.38</version>
             </dependency>
 
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>5.8.28</version> <!-- 最新版本可去 Maven 仓库查询 -->
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

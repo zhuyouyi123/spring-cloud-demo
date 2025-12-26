@@ -5,6 +5,7 @@ spring:
   profiles:
     # 这里配置的是命名空间
     active: public
+    include: feign
   application:
     name: service-order
   cloud:
@@ -16,9 +17,9 @@ spring:
         import-check:
           enabled: false
 
-logging:
-  level:
-    com.demo.order: debug
+#logging:
+#  level:
+#    com.demo.order: debug
 ---
 spring:
   config:
