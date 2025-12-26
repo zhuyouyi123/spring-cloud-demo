@@ -1,15 +1,13 @@
 package com.demo.product.controller;
 
-import cn.hutool.core.thread.ThreadUtil;
 import com.demo.model.bean.Product;
 import com.demo.product.service.ProductService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("product")
@@ -29,7 +27,9 @@ public class ProductController {
     private String autoConfirm;
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable("id") String id) {
+    public Product getProduct(@PathVariable("id") String id, HttpServletRequest request) {
+        String header = request.getHeader("X-Token");
+        log.info("X-Token:{}", header);
 //        TimeUnit.SECONDS.sleep(2);
         return productService.getProductById(id);
     }
