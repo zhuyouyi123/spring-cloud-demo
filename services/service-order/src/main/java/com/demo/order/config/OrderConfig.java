@@ -15,7 +15,7 @@ public class OrderConfig {
         return Logger.Level.FULL;
     }
 
-    @Bean
+//    @Bean
     Retryer retryer() {
         // 默认重试策略
         return new Retryer.Default();

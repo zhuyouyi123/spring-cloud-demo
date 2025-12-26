@@ -16,3 +16,8 @@ spring:
             # 读取超时，5000 毫秒
             read-timeout: 3000
 #            retryer:  feign.Retryer.NEVER_RETRY
+
+#  Feign Sentinel 配置 熔断 开启之后 能使用默认fallback
+feign:
+  sentinel:
+    enabled: true
