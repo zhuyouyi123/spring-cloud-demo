@@ -2,6 +2,7 @@ package com.demo.order.service.impl;
 
 import com.demo.model.bean.Order;
 import com.demo.model.bean.Product;
+import com.demo.order.feign.ProductFeignClient;
 import com.demo.order.service.OrderService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,9 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private RestTemplate restTemplate;
 
+    @Resource
+    private ProductFeignClient productFeignClient;
+
 
     /**
      * 创建订单
@@ -40,7 +44,9 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Order createOrder(Long userId, Long productId) {
-        Product product = getProductByIdWithLoadBalancer(productId);
+        Product product = productFeignClient.getProduct(productId + "", "");
+//        Product product = getProductByIdWithLoadBalancer(productId);
+
 
         return Order.builder()
                 .id(1L)
