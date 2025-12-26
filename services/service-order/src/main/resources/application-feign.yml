@@ -21,6 +21,8 @@ spring:
         dashboard: localhost:8080
       # 懒加载/提前加载
       eager: true
+      # true 统一web上下文 false 关闭上下文统一 例如 链路模式限流
+      web-context-unify: false
 
 #  Feign Sentinel 配置 熔断 开启之后 能使用默认fallback
 feign:

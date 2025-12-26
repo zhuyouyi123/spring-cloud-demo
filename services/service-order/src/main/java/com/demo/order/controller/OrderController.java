@@ -26,6 +26,16 @@ public class OrderController {
         return orderService.createOrder(userId, productId);
     }
 
+    @GetMapping("seckill")
+    public Order createSeckillOrder(@RequestParam("userId") Long userId,
+                             @RequestParam("productId") Long productId) {
+
+        Order order = orderService.createOrder(userId, productId);
+        order.setId(Long.MAX_VALUE);
+        return order;
+    }
+
+
     @GetMapping("config")
     public String getConfig() {
         String timeout = "timeout:" + orderProperties.getTimeout();
