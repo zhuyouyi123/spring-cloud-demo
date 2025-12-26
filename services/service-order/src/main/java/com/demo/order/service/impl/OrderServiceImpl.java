@@ -1,5 +1,7 @@
 package com.demo.order.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.demo.model.bean.Order;
 import com.demo.model.bean.Product;
 import com.demo.order.feign.ProductFeignClient;
@@ -16,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,6 +39,20 @@ public class OrderServiceImpl implements OrderService {
     private ProductFeignClient productFeignClient;
 
 
+    public Order defaultBlockHandler(Long userId, Long productId, BlockException blockException) {
+        return Order.builder()
+                .id(1L)
+                .totalAmount(new BigDecimal("0"))
+                .userId(userId)
+                .nickname("defaultBlockHandler")
+                .address("address")
+                .productInfos(
+                        Collections.singletonList(Product.builder()
+                                .id(productId).price(new BigDecimal("0")).num(0)
+                                .build())
+                )
+                .build();
+    }
     /**
      * 创建订单
      *
@@ -43,9 +60,13 @@ public class OrderServiceImpl implements OrderService {
      * @param productId 商品id
      */
     @Override
+    // 添加sentinel资源 会寻找同级的defaultBlockHandler 找不到 也会使用全局异常处理
+    @SentinelResource(value = "createOrder",blockHandler = "defaultBlockHandler")
+    // 最终会走到全局异常处理里面
+    // @SentinelResource(value = "createOrder")
     public Order createOrder(Long userId, Long productId) {
         Product product = productFeignClient.getProduct(productId + "", "");
-//        Product product = getProductByIdWithLoadBalancer(productId);
+       // Product product = getProductByIdWithLoadBalancer(productId);
 
 
         return Order.builder()

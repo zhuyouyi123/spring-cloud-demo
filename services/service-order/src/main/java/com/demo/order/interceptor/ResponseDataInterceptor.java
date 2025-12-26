@@ -53,6 +53,7 @@ public class ResponseDataInterceptor implements ResponseInterceptor {
             }
         }
 
+        log.info("返回响应信息：{}", originalResponse);
         // 3. 返回处理后的响应（必须返回，否则业务代码会拿到 null）
         return originalResponse;
     }
