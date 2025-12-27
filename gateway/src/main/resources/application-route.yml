@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        # 全局唯一不重复
+        - id: order-route
+          # 目的地
+          uri: lb://service-order
+          # 断言 有两种方式 方式1
+          predicates:
+            - Path=/api/order/**,/order/**
+          # 元数据
+          metadata:
+            hello: world
+          # 顺序
+          order: 1
+        - id: product-route
+          uri: lb://service-product
+          # 断言 方式2
+          predicates:
+            #- Path=/api/product/**,/product/**
+            - name: Path
+              args:
+                  paths: /api/product/**,/product/**
+                  # 匹配单段 好像是判断后面有没有斜杠的
+                  matchSingleSegment: true

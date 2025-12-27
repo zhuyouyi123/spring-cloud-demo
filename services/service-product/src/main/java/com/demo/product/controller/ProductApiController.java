@@ -7,16 +7,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.TimeUnit;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("api/product")
 @Slf4j
 // 自动刷新 配置中心修改的值 可以动态刷新
 @RefreshScope
-public class ProductController {
+public class ProductApiController {
 
     @Resource
     private ProductService productService;

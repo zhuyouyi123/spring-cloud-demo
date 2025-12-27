@@ -8,7 +8,6 @@ import com.demo.order.feign.ProductFeignClient;
 import com.demo.order.service.OrderService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -17,10 +16,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -65,9 +61,8 @@ public class OrderServiceImpl implements OrderService {
     // 最终会走到全局异常处理里面
     // @SentinelResource(value = "createOrder")
     public Order createOrder(Long userId, Long productId) {
-        Product product = productFeignClient.getProduct(productId + "", "");
+        Product product = productFeignClient.getProduct(productId + "", UUID.randomUUID().toString());
        // Product product = getProductByIdWithLoadBalancer(productId);
-
 
         return Order.builder()
                 .id(1L)
