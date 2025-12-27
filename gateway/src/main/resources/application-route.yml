@@ -2,6 +2,17 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: bing-route
+          uri: https://cn.bing.com
+          predicates:
+            - name: Path
+              args:
+                  paths: /search
+            - name: Query
+              args:
+                  param: q
+                  regex: nihao
+          order: 999
         # 全局唯一不重复
         - id: order-route
           # 目的地
@@ -22,5 +33,9 @@ spring:
             - name: Path
               args:
                   paths: /api/product/**,/product/**
-                  # 匹配单段 好像是判断后面有没有斜杠的
+                  # 匹配单段 好像是判断后面有没有斜杠的 可选
                   matchSingleSegment: true
+            - name: Query
+              args:
+                param: id
+                regex: \d+
