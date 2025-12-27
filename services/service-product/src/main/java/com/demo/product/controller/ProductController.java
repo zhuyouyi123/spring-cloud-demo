@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.TimeUnit;
+
 @RestController
 @RequestMapping("product")
 @Slf4j
@@ -27,10 +29,11 @@ public class ProductController {
     private String autoConfirm;
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable("id") String id, HttpServletRequest request) {
+    public Product getProduct(@PathVariable("id") String id, HttpServletRequest request) throws InterruptedException {
         String header = request.getHeader("X-Token");
-        log.info("X-Token:{}", header);
-//        TimeUnit.SECONDS.sleep(2);
+        // log.info("X-Token:{}", header);
+       // TimeUnit.SECONDS.sleep(2);
+       // int a =  10/0;
         return productService.getProductById(id);
     }
 
