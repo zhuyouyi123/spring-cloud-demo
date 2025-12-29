@@ -1,15 +1,15 @@
 package com.demo.order.service;
 
 
-import com.demo.model.bean.Order;
+import com.demo.model.bean.dataobject.OrderDO;
+import com.demo.model.bean.order.dto.CreateOrderDTO;
 
 public interface OrderService {
 
     /**
      * 创建订单
      *
-     * @param userId     用户id
-     * @param productId  商品id
+     * @param dto {@link CreateOrderDTO}
      */
-    Order createOrder(Long userId, Long productId);
+    OrderDO createOrder(CreateOrderDTO dto);
 }

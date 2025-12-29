@@ -1,6 +1,8 @@
 package com.demo.product.controller;
 
 import com.demo.model.bean.Product;
+import com.demo.model.bean.product.vo.ProductVO;
+import com.demo.model.common.RespVO;
 import com.demo.product.service.ProductService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,13 +32,13 @@ public class ProductApiController {
     private String autoConfirm;
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable("id") String id, HttpServletRequest request) throws InterruptedException {
+    public RespVO<ProductVO> getProduct(@PathVariable("id") String id, HttpServletRequest request) throws InterruptedException {
         String header = request.getHeader("X-Token");
         String requestURI = request.getRequestURI();
         log.info("X-Token:{}, RequestUrl:{}", header, requestURI);
        // TimeUnit.SECONDS.sleep(2);
        // int a =  10/0;
-        return productService.getProductById(id);
+        return RespVO.success(productService.getProductById(id));
     }
 
     @GetMapping("config")

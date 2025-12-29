@@ -2,9 +2,17 @@ package com.demo.order.service.impl;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.model.bean.Order;
 import com.demo.model.bean.Product;
+import com.demo.model.bean.dataobject.OrderDO;
+import com.demo.model.bean.dataobject.ProductDO;
+import com.demo.model.bean.order.dto.CreateOrderDTO;
+import com.demo.model.bean.product.vo.ProductVO;
+import com.demo.model.common.RespVO;
 import com.demo.order.feign.ProductFeignClient;
+import com.demo.order.mapper.OrderMapper;
 import com.demo.order.service.OrderService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +28,7 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDO> implements OrderService {
 
     @Resource
     private DiscoveryClient discoveryClient;
@@ -49,31 +57,32 @@ public class OrderServiceImpl implements OrderService {
                 )
                 .build();
     }
+
     /**
      * 创建订单
      *
-     * @param userId    用户id
-     * @param productId 商品id
+     * @param dto {@link CreateOrderDTO}
      */
     @Override
     // 添加sentinel资源 会寻找同级的defaultBlockHandler 找不到 也会使用全局异常处理
-    @SentinelResource(value = "createOrder",blockHandler = "defaultBlockHandler")
+    @SentinelResource(value = "createOrder", blockHandler = "defaultBlockHandler")
     // 最终会走到全局异常处理里面
     // @SentinelResource(value = "createOrder")
-    public Order createOrder(Long userId, Long productId) {
-        Product product = productFeignClient.getProduct(productId + "", UUID.randomUUID().toString());
-       // Product product = getProductByIdWithLoadBalancer(productId);
+    public OrderDO createOrder(CreateOrderDTO dto) {
+        RespVO<ProductVO> respVO = productFeignClient.getProduct(dto.getProductId() + "", UUID.randomUUID().toString());
+        ProductVO data = respVO.getData();
+        // Product product = getProductByIdWithLoadBalancer(productId);
 
-        return Order.builder()
-                .id(1L)
-                .totalAmount(product.getPrice().multiply(new BigDecimal(product.getNum())))
-                .userId(userId)
-                .nickname("demo")
-                .address("address")
-                .productInfos(
-                        Arrays.asList(product)
-                )
+        OrderDO orderDO = OrderDO.builder()
+                .totalAmount(data.getPrice().multiply(new BigDecimal(dto.getNum())))
+                .userId(dto.getUserId())
+                .nickname("nickname")
+                .address(dto.getAddress())
+                .productIds(JSON.toJSONString(List.of(data.getId())))
                 .build();
+
+        save(orderDO);
+        return orderDO;
     }
 
     private Product getProductById(Long productId) {

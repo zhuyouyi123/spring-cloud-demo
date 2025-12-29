@@ -49,16 +49,12 @@ spring:
 #            - AddRequestHeader=X-Request-Default-Foo, Default-Bar
           # 断言 方式2
           predicates:
-            #- Path=/api/product/**,/product/**
-            - name: Path
-              args:
-                  paths: /api/product/**,/product/**
-                  # 匹配单段 好像是判断后面有没有斜杠的 可选
-                  matchSingleSegment: true
-            - name: Query
-              args:
-                param: id
-                regex: \d+
+            - Path=/api/product/**,/product/**
+#            - name: Path
+#              args:
+#                  paths: /api/product/**,/product/**
+#                  # 匹配单段 好像是判断后面有没有斜杠的 可选
+#                  matchSingleSegment: true
         - id: seata-account-route
           # 目的地
           uri: lb://seata-account

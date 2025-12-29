@@ -1,4 +1,4 @@
-package com.demo.account.dataobject;
+package com.demo.model.bean.dataobject;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -8,23 +8,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@TableName("account")
-public class AccountDO {
+@TableName("orders")
+public class OrderDO {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    private String username;
+    /**
+     * 总价
+     */
+    private BigDecimal totalAmount;
 
-    private String gender;
+    private Long userId;
 
-    private LocalDateTime createTime;
+    private String nickname;
 
-    private LocalDateTime updateTime;
+    private String address;
+
+    private String productIds;
 }

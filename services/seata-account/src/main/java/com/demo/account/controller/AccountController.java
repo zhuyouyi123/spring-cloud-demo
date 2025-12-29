@@ -1,8 +1,8 @@
 package com.demo.account.controller;
 
-import com.demo.account.dataobject.AccountDO;
+import com.demo.model.bean.dataobject.AccountDO;
 import com.demo.account.mapper.AccountMapper;
-import com.demo.account.pojo.AccountAddDTO;
+import com.demo.model.bean.account.dto.AccountAddDTO;
 import com.demo.model.common.R;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;

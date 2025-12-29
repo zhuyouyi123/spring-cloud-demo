@@ -15,10 +15,10 @@ public class OrderApiController {
     @Resource
     private OrderService orderService;
 
-    @GetMapping("create")
-    public Order createOrder(@RequestParam("userId") Long userId,
-                             @RequestParam("productId") Long productId) {
-
-        return orderService.createOrder(userId, productId);
-    }
+    // @GetMapping("create")
+    // public Order createOrder(@RequestParam("userId") Long userId,
+    //                          @RequestParam("productId") Long productId) {
+    //
+    //     return orderService.createOrder(userId, productId);
+    // }
 }

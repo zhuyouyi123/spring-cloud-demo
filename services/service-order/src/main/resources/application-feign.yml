@@ -6,8 +6,8 @@ spring:
           # 默认配置
           default:
             logger-level: full
-            connect-timeout: 1000
-            read-timeout: 2000
+            connect-timeout: 3000
+            read-timeout: 3000
           # 具体 feign 客户端的超时配置
           service-product:
             logger-level: full
