@@ -12,6 +12,12 @@ spring:
               args:
                   param: q
                   regex: nihao
+            # - Vip= user:nihao
+            # http://localhost/search?q=haha&user=nihao
+            - name: Vip
+              args:
+                  param: user
+                  value: nihao
           order: 999
         # 全局唯一不重复
         - id: order-route
@@ -20,6 +26,8 @@ spring:
           # 断言 有两种方式 方式1
           predicates:
             - Path=/api/order/**,/order/**
+          filters:
+            - OnceToken=X-Response-Token,uuid
           # 元数据
           metadata:
             hello: world
@@ -27,6 +35,12 @@ spring:
           order: 1
         - id: product-route
           uri: lb://service-product
+          # 过滤器
+#          filters:
+#            - RewritePath=/api/product/?(?<segment>.*), /$\{segment}
+#            - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+#            - AddRequestParameter=foo, bar
+#            - AddRequestHeader=X-Request-Default-Foo, Default-Bar
           # 断言 方式2
           predicates:
             #- Path=/api/product/**,/product/**
@@ -39,3 +53,5 @@ spring:
               args:
                 param: id
                 regex: \d+
+      default-filters:
+        - AddResponseHeader=X-Response-Default-Foo, Default-Bar
