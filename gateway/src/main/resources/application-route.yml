@@ -59,5 +59,10 @@ spring:
               args:
                 param: id
                 regex: \d+
+        - id: seata-account-route
+          # 目的地
+          uri: lb://seata-account
+          predicates:
+            - Path=/account/**
       default-filters:
         - AddResponseHeader=X-Response-Default-Foo, Default-Bar
