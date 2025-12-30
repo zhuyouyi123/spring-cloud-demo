@@ -1,6 +1,7 @@
 package com.demo.order.feign.fallback;
 
 import com.demo.model.bean.dataobject.ProductDO;
+import com.demo.model.bean.product.dto.ProductDeductDTO;
 import com.demo.model.bean.product.vo.ProductVO;
 import com.demo.model.common.RespVO;
 import com.demo.order.feign.ProductFeignClient;
@@ -19,5 +20,10 @@ public class ProductFeignClientFallback implements ProductFeignClient {
                 .description("商品不存在")
                 .projectName("兜底处理")
                 .build());
+    }
+
+    @Override
+    public RespVO<ProductVO> deduct(String id, ProductDeductDTO dto) {
+        return getProduct( id, null);
     }
 }

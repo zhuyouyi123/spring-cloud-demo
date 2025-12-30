@@ -3,6 +3,7 @@ package com.demo.product.controller;
 import com.demo.model.bean.Product;
 import com.demo.model.bean.dataobject.ProductDO;
 import com.demo.model.bean.product.dto.CreateProductDTO;
+import com.demo.model.bean.product.dto.ProductDeductDTO;
 import com.demo.model.bean.product.vo.ProductVO;
 import com.demo.model.common.RespVO;
 import com.demo.product.service.ProductService;
@@ -38,10 +39,10 @@ public class ProductController {
         String header = request.getHeader("X-Token");
         String requestURI = request.getRequestURI();
         log.info("X-Token:{}, RequestUrl:{}", header, requestURI);
-       // TimeUnit.SECONDS.sleep(2);
-       // int a =  10/0;
+        // TimeUnit.SECONDS.sleep(2);
+        // int a =  10/0;
         ProductVO product = productService.getProductById(id);
-        if (Objects.isNull(product)){
+        if (Objects.isNull(product)) {
             return RespVO.failure("商品不存在");
         }
         log.info("product:{}", product);
@@ -56,6 +57,14 @@ public class ProductController {
     @PostMapping("create")
     public RespVO<ProductDO> create(@RequestBody @Validated CreateProductDTO dto) {
         ProductDO product = productService.createProduct(dto);
+        return RespVO.success(product);
+    }
+
+    @PostMapping("deduct/{id}")
+    public RespVO<ProductDO> deduct(@PathVariable("id") String id, @RequestBody @Validated ProductDeductDTO dto) {
+        ProductDO product = productService.deduct(id, dto);
+        // int a = 100/0;
+        log.info("product:{}", product);
         return RespVO.success(product);
     }
 

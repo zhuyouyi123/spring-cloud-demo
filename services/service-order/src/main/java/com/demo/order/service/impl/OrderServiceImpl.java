@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.model.bean.Order;
 import com.demo.model.bean.Product;
 import com.demo.model.bean.dataobject.OrderDO;
-import com.demo.model.bean.dataobject.ProductDO;
 import com.demo.model.bean.order.dto.CreateOrderDTO;
+import com.demo.model.bean.product.dto.ProductDeductDTO;
 import com.demo.model.bean.product.vo.ProductVO;
 import com.demo.model.common.RespVO;
 import com.demo.order.feign.ProductFeignClient;
@@ -16,6 +16,7 @@ import com.demo.order.mapper.OrderMapper;
 import com.demo.order.service.OrderService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -65,11 +66,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderDO> implemen
      */
     @Override
     // 添加sentinel资源 会寻找同级的defaultBlockHandler 找不到 也会使用全局异常处理
-    @SentinelResource(value = "createOrder", blockHandler = "defaultBlockHandler")
+    // @SentinelResource(value = "createOrder", blockHandler = "defaultBlockHandler")
     // 最终会走到全局异常处理里面
     // @SentinelResource(value = "createOrder")
+
+    @GlobalTransactional
     public OrderDO createOrder(CreateOrderDTO dto) {
         RespVO<ProductVO> respVO = productFeignClient.getProduct(dto.getProductId() + "", UUID.randomUUID().toString());
+        if (!respVO.isSuccess()) {
+            throw new RuntimeException("获取商品信息失败");
+        }
+
+        RespVO<ProductVO> deduct = productFeignClient.deduct(dto.getProductId() + "", new ProductDeductDTO(dto.getNum()));
+
         ProductVO data = respVO.getData();
         // Product product = getProductByIdWithLoadBalancer(productId);
 

@@ -78,4 +78,8 @@ public class RespVO<T> {
     public static <T> RespVO<T> failure(String... errorMsg) {
         return new RespVO<>(DEFAULT_REQUEST_FAIL_CODE, errorMsg);
     }
+
+    public boolean isSuccess() {
+        return DEFAULT_REQUEST_SUCCESS_CODE == errorCode;
+    }
 }

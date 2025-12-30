@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.demo.model.bean.Product;
 import com.demo.model.bean.dataobject.ProductDO;
 import com.demo.model.bean.product.dto.CreateProductDTO;
+import com.demo.model.bean.product.dto.ProductDeductDTO;
 import com.demo.model.bean.product.vo.ProductVO;
 import com.demo.product.mapper.ProductMapper;
 import com.demo.product.service.ProductService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -22,7 +24,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, ProductDO> im
     @Override
     public ProductVO getProductById(String id) {
         ProductDO productDO = getById(id);
-        if (Objects.isNull(productDO)){
+        if (Objects.isNull(productDO)) {
             return null;
         }
         return ProductVO.builder()
@@ -49,5 +51,22 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, ProductDO> im
 
         save(productDO);
         return productDO;
+    }
+
+    /**
+     * 扣减商品库存
+     *
+     * @param id  商品id
+     * @param dto 扣减商品DTO
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ProductDO deduct(String id, ProductDeductDTO dto) {
+        ProductDO productDO = getById(id);
+        if (Objects.nonNull(productDO)) {
+            productDO.setNum(productDO.getNum() - dto.getNum());
+            return updateById(productDO) ? productDO : null;
+        }
+        return null;
     }
 }
