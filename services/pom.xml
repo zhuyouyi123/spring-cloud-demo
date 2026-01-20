@@ -28,6 +28,21 @@
     <!--服务注册-->
     <dependencies>
         <dependency>
+            <groupId>com.development</groupId>
+            <artifactId>dev-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.development</groupId>
+            <artifactId>dev-mqtt-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.development</groupId>
+            <artifactId>dev-mqtt-client-starter</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
@@ -56,6 +71,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>

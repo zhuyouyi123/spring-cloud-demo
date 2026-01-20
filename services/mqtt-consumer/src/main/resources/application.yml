@@ -1,0 +1,20 @@
+server:
+  port: 28080
+
+mqtt:
+  state:
+    enabled: true
+    deployment-mode: standalone
+  consumer:
+    group: local
+    worker-count: 8
+    worker-queue-size: 1000
+  emqx:
+    broker:
+      host: 192.168.10.15
+      port: 48082
+#  registration:
+#    enabled: true
+#    broker:
+#      host: 192.168.10.15
+#      port: 48082
